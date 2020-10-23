@@ -15,12 +15,17 @@
             font-weight: normal;
             display: flex;
             align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
     
         .modal-footer header {
             display: none;
         }
     
+        .modal-footer .conteudo{
+            text-align:  center;
+        }
         .modal-footer .conteudo p {
             text-align: justify;
         }
@@ -58,13 +63,13 @@
                 },
                 methods:{
                     open: function(){
-                        $(this.data.elemento).show();
+                        $(alertaLGPD.data.elemento).show();
                     },
                     close: function(){
-                        $(this.data.elemento).hide();
+                        $(alertaLGPD.data.elemento).hide();
                     },
                     gravarCookie: function(){
-                        cookies.insert(365, this.data.nomeCookie, "on");
+                        alertaLGPD.common.cookies.insert(365, alertaLGPD.data.nomeCookie, "on");
                     }
                 },
                 events: function(){
@@ -96,6 +101,7 @@
                     }
                 },
                 init: function(){
+                    this.events();
                     if(this.common.cookies.get(this.data.nomeCookie) == ""){
                         this.methods.open();
                     }else{
