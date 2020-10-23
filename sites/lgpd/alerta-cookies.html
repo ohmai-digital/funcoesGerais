@@ -1,0 +1,111 @@
+<section id="modal-alerta-lgpd-cookie" class="modal-footer" style="display: none;">
+    <style>
+        .modal-footer {
+            width: 100%;
+            position: fixed;
+            z-index: 999;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--fundo-destaque);
+        }
+    
+        .modal-footer .container {
+            color: var(--texto-padrao);
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+        }
+    
+        .modal-footer header {
+            display: none;
+        }
+    
+        .modal-footer .conteudo p {
+            text-align: justify;
+        }
+    
+        .modal-footer footer {
+            margin-left: 20px;
+        }
+    
+        .modal-footer footer button {
+            line-height: 1;
+            width: initial;
+            height: initial;
+            padding: 5px 20px;
+        }
+    </style>
+
+    <div class="container">
+        <header>
+            <h2>Alerta de segurança</h2>
+        </header>
+        <div class="conteudo">
+            <p>Coletamos dados para melhorar o desempenho e segurança do site, além de personalizar conteúdo e anúncios. conferir
+                nossa <a href="/institucional/politica-de-privacidade">política de privacidade</a> ou entrar em contato consoco para caso de dúvidas.</p>
+        </div>
+        <footer>
+            <button>Entendi</button>
+        </footer>    
+    </div>
+    <script>
+        function ativarAlertaLGPDCookie(){
+            var alertaLGPD = {
+                data:{
+                    elemento: "#modal-alerta-lgpd-cookie",
+                    nomeCookie: "oh-lgpd-cookie"
+                },
+                methods:{
+                    open: function(){
+                        $(this.data.elemento).show();
+                    },
+                    close: function(){
+                        $(this.data.elemento).hide();
+                    },
+                    gravarCookie: function(){
+                        cookies.insert(365, this.data.nomeCookie, "on");
+                    }
+                },
+                events: function(){
+                    $(`${this.data.elemento} button`).on("click", function () {
+                        alertaLGPD.methods.close();
+                        alertaLGPD.methods.gravarCookie();
+                    });
+                },
+                common:{
+                    cookies: {
+                        insert: function (dias, nome, conteudo) {
+                            var d = new Date();
+                            d.setTime(d.getTime() + (dias * 24 * 60 * 60 * 1000));
+                            var expires = "expires=" + d.toGMTString();
+                            document.cookie = nome + "=" + conteudo + "; " + expires;
+                        },
+                        get: function (cname) {
+                            var name = cname + "=";
+                            var ca = document.cookie.split(';');
+                            for (var i = 0; i < ca.length; i++) {
+                                var c = ca[i];
+                                while (c.charAt(0) == ' ')
+                                    c = c.substring(1);
+                                if (c.indexOf(name) != -1)
+                                    return c.substring(name.length, c.length)
+                            }
+                            return ""
+                        }
+                    }
+                },
+                init: function(){
+                    if(this.common.cookies.get(this.data.nomeCookie) == ""){
+                        this.methods.open();
+                    }else{
+                        this.methods.close();
+                    }
+                }
+            }
+            alertaLGPD.init();
+        }
+        
+        ativarAlertaLGPDCookie();           
+    </script>
+</section>
